@@ -1,14 +1,13 @@
 package com.knoldus.akka
 
-import akka.actor.scala2ActorRef
 import akka.actor.Actor
 import akka.actor.ActorRef
 import akka.dispatch.Dispatchers
 
 object Processor {
   val dispatcher = Dispatchers.newExecutorBasedEventDrivenWorkStealingDispatcher("dispatcher")
-    .setCorePoolSize(500)
-    .setMaxPoolSize(500)
+    .setCorePoolSize(16)
+    .setMaxPoolSize(32)
     .build
 }
 

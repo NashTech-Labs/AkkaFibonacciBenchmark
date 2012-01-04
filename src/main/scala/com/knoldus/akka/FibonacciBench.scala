@@ -8,7 +8,7 @@ import akka.routing.Routing
 
 object FibonacciBench extends App {
   val NO_OF_MESSAGES = 100000
-  val NO_OF_WORKERS = 4
+  val NO_OF_WORKERS = 8
 
   val listener = initializeListener(NO_OF_WORKERS, NO_OF_MESSAGES)
   tailRecurseAndFireMessages(NO_OF_MESSAGES)

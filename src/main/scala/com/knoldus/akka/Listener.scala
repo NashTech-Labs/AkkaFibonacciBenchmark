@@ -3,14 +3,14 @@ package com.knoldus.akka
 import akka.actor.Actor.actorOf
 import akka.actor.Actor
 import akka.actor.ActorRef
-import akka.routing.SmallestMailboxFirstIterator
+import akka.routing.CyclicIterator
 import akka.routing.Routing
 
 class Listener(numberOfWorkers: Int, diagnostics: ActorRef) extends Actor {
   var router: ActorRef = _
   override def preStart = {
     val workers = Vector.fill(numberOfWorkers)(actorOf(new Processor(diagnostics)).start)
-    router = Routing.loadBalancerActor(SmallestMailboxFirstIterator(workers)).start
+    router = Routing.loadBalancerActor(CyclicIterator(workers)).start
   }
 
   def receive = {
