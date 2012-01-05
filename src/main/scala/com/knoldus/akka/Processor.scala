@@ -3,12 +3,13 @@ package com.knoldus.akka
 import akka.actor.Actor
 import akka.actor.ActorRef
 import akka.dispatch.Dispatchers
+import akka.dispatch.UnboundedMailbox
 
 object Processor {
-  val dispatcher = Dispatchers.newExecutorBasedEventDrivenWorkStealingDispatcher("dispatcher")
-    .setCorePoolSize(16)
-    .setMaxPoolSize(32)
-    .build
+  val dispatcher = Dispatchers.newExecutorBasedEventDrivenDispatcher("multiplier", 100, UnboundedMailbox())
+                  .setCorePoolSizeFromFactor(1.0)
+                  .setMaxPoolSizeFromFactor(1.0)
+                  .build
 }
 
 class Processor(diagnostics: ActorRef) extends Actor {
@@ -16,7 +17,7 @@ class Processor(diagnostics: ActorRef) extends Actor {
   def receive = {
     case num: Int =>
       val fibonacci = fib(num)
-      println("Fibonacci of " + num + " is " + fibonacci)
+      //println("Fibonacci of " + num + " is " + fibonacci)
       diagnostics ! fibonacci
   }
 
